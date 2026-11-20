@@ -1,0 +1,51 @@
+name: Publish
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # The MaterialDesign sources need the .NET 10 SDK (their global.json); .NET 8 builds the net8.0-windows target.
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      # Tag v5.3.2 must match $PackageVersion in build.ps1.
+      - name: Check tag matches package version
+        shell: pwsh
+        run: |
+          $build = Get-Content build.ps1 -Raw
+          if ($build -notmatch "\`$PackageVersion\s*=\s*'([^']+)'") { throw '$PackageVersion is not found in build.ps1' }
+          $version = $Matches[1]
+          $tag = "${{ github.ref_name }}".TrimStart('v')
+          if ($version -ne $tag) { throw "Tag v$tag does not match version $version in build.ps1" }
+
+      - name: Build and pack
+        shell: pwsh
+        run: ./build.ps1
+
+      # Trusted Publishing: the GitHub OIDC token is exchanged for a short-lived nuget.org key, no API key is stored.
+      - name: NuGet login
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: SamirShibliev
+
+      - name: Push
+        shell: pwsh
+        run: dotnet nuget push artifacts/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
