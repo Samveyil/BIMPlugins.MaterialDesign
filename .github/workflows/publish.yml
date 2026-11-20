@@ -46,6 +46,13 @@ jobs:
         with:
           user: SamirShibliev
 
+      # Each package by its full path: dotnet nuget push does not expand artifacts/*.nupkg on Windows.
       - name: Push
         shell: pwsh
-        run: dotnet nuget push artifacts/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: |
+          $packages = Get-ChildItem artifacts -Filter *.nupkg
+          if (-not $packages) { throw 'No package in artifacts/' }
+          foreach ($package in $packages) {
+            dotnet nuget push $package.FullName --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+            if ($LASTEXITCODE -ne 0) { throw "Push of $($package.Name) failed" }
+          }
