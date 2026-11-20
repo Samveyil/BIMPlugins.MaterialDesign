@@ -1,6 +1,6 @@
 # BIMPlugins.MaterialDesign
 
-[![Revit 2019-2025](https://img.shields.io/badge/Revit-2019--2025-blue.svg)](https://github.com/Samveyil/BIMPlugins.MaterialDesign)
+[![Revit 2019+](https://img.shields.io/badge/Revit-2019%2B-blue.svg)](https://github.com/Samveyil/BIMPlugins.MaterialDesign)
 [![MaterialDesign 5.3.2](https://img.shields.io/badge/MaterialDesign-5.3.2-blue.svg)](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit/releases/tag/v5.3.2)
 [![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Samveyil/BIMPlugins.MaterialDesign/blob/master/LICENSE)
 [![NuGet](https://img.shields.io/nuget/v/BIMPlugins.MaterialDesign.svg)](https://www.nuget.org/packages/BIMPlugins.MaterialDesign)
