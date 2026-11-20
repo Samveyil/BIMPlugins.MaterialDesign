@@ -34,5 +34,6 @@
     <file src="$output$\net8.0-windows\BIMPlugins.MaterialDesign.Colors.dll" target="lib\net8.0-windows7.0" />
     <file src="..\README.md" target="" />
     <file src="icon.png" target="" />
+    <file src="..\LICENSE.txt" target="" />
   </files>
 </package>
