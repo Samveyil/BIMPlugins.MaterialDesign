@@ -79,4 +79,43 @@ os.makedirs(target, exist_ok=True)
 for f in os.listdir(os.path.join(here, "additions")):
     shutil.copy(os.path.join(here, "additions", f), target)
 
+
+# Compact check boxes and radio buttons, as in MaterialDesign 5.2: since 5.3 their hover halo is laid out 1.6 times the
+# box, which pushes the box and its text apart by about 10 px even while the halo is hidden. The halo keeps the box's
+# size in the layout and is scaled to 1.6 only when drawn, so it looks the same on hover and takes no room.
+def compact_halo(path):
+    with open(path, "rb") as stream:
+        data = stream.read()
+    pattern = re.compile(rb'(<Ellipse x:Name="halo"(?:(?!/>).)*?)ConverterParameter=1\.6\}"((?:(?!/>).)*?)'
+                         rb'ConverterParameter=1\.6\}"((?:(?!/>).)*?)RenderTransformOrigin="0\.5,0\.5"\s*/>', re.S)
+    new, count = pattern.subn(rb'\1ConverterParameter=1}"\2ConverterParameter=1}"\3RenderTransformOrigin="0.5,0.5">'
+                              rb'\r\n              <Ellipse.RenderTransform><ScaleTransform ScaleX="1.6" ScaleY="1.6" /></Ellipse.RenderTransform>'
+                              rb'\r\n            </Ellipse>', data)
+    if count != 1:
+        raise SystemExit("the halo of " + os.path.basename(path) + " has changed: found " + str(count) + ", expected 1")
+    with open(path, "wb") as stream:
+        stream.write(new)
+
+
+for name in ("MaterialDesignTheme.CheckBox.xaml", "MaterialDesignTheme.RadioButton.xaml"):
+    compact_halo(os.path.join(themes_dir, "Themes", name))
+
+
+# 5.3 also set the text of check boxes and radio buttons right against the box (Padding 0,2,0,0), the halo's room
+# standing in for the gap. With that room gone, the text gets 2 px of its own, as the BIMPlugins add-ins set it.
+def text_gap(path):
+    with open(path, "rb") as stream:
+        data = stream.read()
+    pattern = re.compile(rb'(<Trigger Property="HasContent" Value="true">(?:(?!</Trigger>).)*?<Setter Property="Padding" Value=")'
+                         rb'0,2,0,0(" />)', re.S)
+    new, count = pattern.subn(rb'\g<1>2,2,0,0\2', data)
+    if count != 1:
+        raise SystemExit("the text padding of " + os.path.basename(path) + " has changed: found " + str(count) + ", expected 1")
+    with open(path, "wb") as stream:
+        stream.write(new)
+
+
+for name in ("MaterialDesignTheme.CheckBox.xaml", "MaterialDesignTheme.RadioButton.xaml"):
+    text_gap(os.path.join(themes_dir, "Themes", name))
+
 print("files with renamed references:", changed)

@@ -13,7 +13,7 @@ $MaterialDesignVersion = '5.3.2'
 
 # The package version: the release's, with a fourth number for BIMPlugins' own changes to the same release (5.3.2.1).
 # The tag that publishes it is v<PackageVersion>.
-$PackageVersion = '5.3.2'
+$PackageVersion = '5.3.2.1'
 
 $root = $PSScriptRoot
 $work = Join-Path $root '.work'

@@ -23,7 +23,7 @@ Namespaces and XAML are MaterialDesign's, so code and XAML written for MaterialD
 ## Installation
 
 ```xml
-<PackageReference Include="BIMPlugins.MaterialDesign" Version="5.3.2" />
+<PackageReference Include="BIMPlugins.MaterialDesign" Version="5.3.2.1" />
 ```
 
 Replace `MaterialDesignThemes` and `MaterialDesignColors` with it. The package targets `net462` (Revit 2019–2024)
@@ -44,10 +44,20 @@ BIMPlugins colours:
 
 | | Light | Dark |
 |---|---|---|
-| Primary | `#F57C00` | `#FFA040` |
+| Primary (`BIMPlugins.PrimaryBrush`) | `#F57C00` | `#FFA040` |
 | Primary text on the background (`BIMPlugins.PrimaryTextBrush`) | `#C25E00` | `#FFB366` |
-| Secondary | `#1565C0` | `#64B5F6` |
+| Secondary (`BIMPlugins.SecondaryBrush`) | `#1565C0` | `#64B5F6` |
 | Background | `#FAFAFA` | `#1F2329` |
+
+The brushes take the theme's colours, so frames and text of your own need no colour written by hand:
+`BorderBrush="{StaticResource BIMPlugins.PrimaryBrush}"` (or `DynamicResource` in a window that switches themes).
+
+An add-in with colours of its own sets them on the theme, and MaterialDesign's controls and these brushes take them
+together; the primary text colour is derived, darker in the light theme and lighter in the dark one:
+
+```xml
+<materialDesign:BIMPluginsTheme BaseTheme="Light" PrimaryColor="#2E7D32" SecondaryColor="#6A1B9A" />
+```
 
 `BaseTheme="Inherit"` follows the Windows app theme. In code the colours are in `BIMPluginsColors.Light` and `BIMPluginsColors.Dark`.
 
