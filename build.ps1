@@ -39,7 +39,12 @@ foreach ($framework in 'net462', 'net8.0-windows') {
 }
 
 $output = Join-Path $sources "src/MaterialDesignThemes.Wpf/bin/$Configuration"
+
+# The commit of this repository the package is built from, shown on nuget.org.
+$commit = (git -C $root rev-parse HEAD).Trim()
+
 Invoke-Checked { dotnet pack (Join-Path $root 'pack/Pack.csproj') -nologo -v q -o $artifacts `
-    "-p:PackageVersion=$PackageVersion" "-p:BuildOutput=$output" "-p:MaterialDesignVersion=$MaterialDesignVersion" }
+    "-p:PackageVersion=$PackageVersion" "-p:BuildOutput=$output" "-p:MaterialDesignVersion=$MaterialDesignVersion" `
+    "-p:RepositoryCommit=$commit" }
 
 Write-Host "Packed BIMPlugins.MaterialDesign $PackageVersion to $artifacts"

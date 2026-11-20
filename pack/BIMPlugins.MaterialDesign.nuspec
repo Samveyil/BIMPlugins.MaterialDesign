@@ -9,8 +9,11 @@
     <projectUrl>https://github.com/Samveyil/BIMPlugins.MaterialDesign</projectUrl>
     <readme>README.md</readme>
     <icon>icon.png</icon>
-    <description>Material Design in XAML Toolkit $materialDesignVersion under assembly names of its own (BIMPlugins.MaterialDesign, BIMPlugins.MaterialDesign.Colors), for Revit add-ins: it never shares styles with another add-in's MaterialDesign in the one Revit process. Namespaces and XAML are MaterialDesign's. Adds BIMPluginsTheme, the BIMPlugins colours in light and dark.</description>
-    <tags>WPF XAML MaterialDesign Revit BIMPlugins</tags>
+    <description>Material Design in XAML Toolkit for Revit add-ins, under assembly names of its own: it never clashes with another add-in's MaterialDesign.</description>
+    <releaseNotes>https://github.com/Samveyil/BIMPlugins.MaterialDesign/blob/master/CHANGELOG.md</releaseNotes>
+    <copyright>Copyright © 2026 Samir Shibliev. Material Design in XAML Toolkit © James Willock and contributors.</copyright>
+    <tags>revit wpf xaml materialdesign material-design theme bim</tags>
+    <repository type="git" url="https://github.com/Samveyil/BIMPlugins.MaterialDesign" commit="$commit$" />
     <dependencies>
       <group targetFramework=".NETFramework4.6.2">
         <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.77" />
