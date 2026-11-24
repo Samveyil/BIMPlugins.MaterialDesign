@@ -23,7 +23,7 @@ Namespaces and XAML are MaterialDesign's, so code and XAML written for MaterialD
 ## Installation
 
 ```xml
-<PackageReference Include="BIMPlugins.MaterialDesign" Version="5.3.2.1" />
+<PackageReference Include="BIMPlugins.MaterialDesign" Version="5.3.2.2" />
 ```
 
 Replace `MaterialDesignThemes` and `MaterialDesignColors` with it. The package targets `net462` (Revit 2019–2024)

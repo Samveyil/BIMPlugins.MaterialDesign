@@ -19,6 +19,7 @@ namespace BIMPlugins.MaterialDesign;
 /// <remarks>
 /// Besides MaterialDesign's own brushes, it adds brushes of the BIMPlugins colours, for frames, icons and text of
 /// your own: <see cref="PrimaryBrushKey"/>, <see cref="PrimaryTextBrushKey"/> and <see cref="SecondaryBrushKey"/>.
+/// Its scroll bars are narrow, as in Visual Studio, instead of MaterialDesign's.
 /// They take the colours of the theme, light or dark, so that no add-in writes them by hand:
 /// <c>BorderBrush="{StaticResource BIMPlugins.PrimaryBrush}"</c>, or DynamicResource for a window that switches themes.
 /// An add-in with colours of its own sets <see cref="PrimaryColor"/> and <see cref="SecondaryColor"/>: MaterialDesign's
@@ -96,12 +97,22 @@ public class BIMPluginsTheme : ResourceDictionary
         var primaryText = _primaryColor is { } own ? Shade(own, dark ? Colors.White : Colors.Black, 0.2) : palette.PrimaryText;
         var secondary = _secondaryColor ?? palette.Secondary;
 
+        // The scroll bars of ScrollBars.xaml, as Visual Studio draws them in its light and dark themes.
+        var scrollTrack = dark ? Color.FromRgb(0x2A, 0x2F, 0x36) : Color.FromRgb(0xF5, 0xF5, 0xF5);
+
         var theme = Theme.Create(dark ? BaseTheme.Dark : BaseTheme.Light, primary, secondary);
         theme.Background = palette.Background;
+        // MaterialDesign fills the square where two scroll bars meet with this colour; in the tracks' colour it is not seen.
+        theme.ScrollBars.Foreground = scrollTrack;
         this.SetTheme(theme);
         this[PrimaryBrushKey] = Frozen(primary);
         this[PrimaryTextBrushKey] = Frozen(primaryText);
         this[SecondaryBrushKey] = Frozen(secondary);
+
+        this["BIMPlugins.ScrollBar.TrackBrush"] = Frozen(scrollTrack);
+        this["BIMPlugins.ScrollBar.ArrowBrush"] = Frozen(dark ? Color.FromRgb(0x99, 0x99, 0x99) : Color.FromRgb(0x86, 0x89, 0x99));
+        this["BIMPlugins.ScrollBar.ThumbBrush"] = Frozen(dark ? Color.FromRgb(0x4E, 0x55, 0x5E) : Color.FromRgb(0xC2, 0xC3, 0xC9));
+        this["BIMPlugins.ScrollBar.ThumbHoverBrush"] = Frozen(dark ? Color.FromRgb(0x9E, 0x9E, 0x9E) : Color.FromRgb(0x86, 0x89, 0x99));
 
         if (MergedDictionaries.Count == 0)
         {
@@ -110,6 +121,12 @@ public class BIMPluginsTheme : ResourceDictionary
             MergedDictionaries.Add(new ResourceDictionary
             {
                 Source = new Uri("pack://application:,,,/" + name + ";component/Themes/MaterialDesign3.Defaults.xaml")
+            });
+
+            // After the defaults, so that its scroll bars replace MaterialDesign's.
+            MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri("pack://application:,,,/" + name + ";component/BIMPlugins/ScrollBars.xaml")
             });
         }
     }

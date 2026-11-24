@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 The package version is the MaterialDesign in XAML Toolkit release it is built from, with a fourth number
 for BIMPlugins' own changes to the same release.
 
+## [5.3.2.2] / 2026-11-24
+### Changed
+- Scroll bars of `BIMPluginsTheme` are narrow, as in Visual Studio: a light track, small arrows at the ends that take
+  the primary colour under the mouse, and a gray thumb that darkens under the mouse; dark ones in the dark theme.
+
 ## [5.3.2.1] / 2026-11-20
 ### Added
 - `BIMPlugins.PrimaryBrush` and `BIMPlugins.SecondaryBrush` in `BIMPluginsTheme`, next to `BIMPlugins.PrimaryTextBrush`:
